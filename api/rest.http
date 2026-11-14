@@ -1,0 +1,158 @@
+
+@host = http://127.0.0.1:8000/api
+
+
+@animalId = 8
+@favoritoId = 10
+@solicitacaoId = 4
+
+
+### ==========================================
+### 1. AUTENTICACAO
+### ==========================================
+
+### Cadastro de usuario
+POST {{host}}/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Usuario Teste2",
+  "email": "usuario.teste2@email.com",
+  "password": "123456789",
+  "password_confirmation": "123456789"
+}
+
+### Login
+# @name login
+POST {{host}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "usuario.teste@email.com",
+  "password": "123456789"
+}
+
+### Token obtido pelo login
+@token = {{login.response.body.token}}
+
+### Consultar usuario autenticado
+GET {{host}}/user
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Logout
+POST {{host}}/logout
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### ==========================================
+### 2. ANIMAIS
+### ==========================================
+
+### Listar animais
+GET {{host}}/animais
+Accept: application/json
+
+### Consultar animal especifico
+GET {{host}}/animais/{{animalId}}
+Accept: application/json
+
+### Cadastrar animal
+POST {{host}}/animais
+Accept: application/json
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Rex",
+  "especie": "Cachorro",
+  "idade": 2,
+  "descricao": "Muito docil e brincalhao",
+  "cidade": "Guarapuava",
+  "estado": "PR"
+}
+
+### Atualizar animal
+PUT {{host}}/animais/{{animalId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Rex Atualizado",
+  "idade": 3,
+  "descricao": "Animal muito carinhoso"
+}
+
+### Excluir animal
+DELETE {{host}}/animais/{{animalId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### ==========================================
+### 3. FAVORITOS
+### ==========================================
+
+### Listar favoritos
+GET {{host}}/favoritos
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Adicionar animal aos favoritos
+POST {{host}}/favoritos
+Accept: application/json
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "animal_id": {{animalId}}
+}
+
+### Remover favorito
+DELETE {{host}}/favoritos/{{favoritoId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### ==========================================
+### 4. SOLICITACOES DE ADOCAO
+### ==========================================
+
+### Listar solicitacoes
+GET {{host}}/solicitacoes-adocao
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Consultar solicitacao especifica
+GET {{host}}/solicitacoes-adocao/{{solicitacaoId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Criar solicitacao de adocao
+POST {{host}}/solicitacoes-adocao
+Accept: application/json
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "animal_id": {{animalId}}
+}
+
+### Atualizar status da solicitacao
+PUT {{host}}/solicitacoes-adocao/{{solicitacaoId}}
+Accept: application/json
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "aprovada"
+}
+
+### Cancelar solicitacao
+DELETE {{host}}/solicitacoes-adocao/{{solicitacaoId}}
+Accept: application/json
+Authorization: Bearer {{token}}
