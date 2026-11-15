@@ -192,7 +192,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
   // Imagem exibida quando o animal não possui foto.
   Widget _imagemPadrao() {
     return Container(
-      color: AppColors.background,
+      color: AppColors.surfaceMuted,
       alignment: Alignment.center,
       child: Icon(Icons.pets, color: AppColors.primary, size: 40),
     );
